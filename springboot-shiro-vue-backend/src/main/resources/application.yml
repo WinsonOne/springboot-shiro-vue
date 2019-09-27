@@ -3,6 +3,20 @@ spring:
     name: springboot-shiro-vue-backend
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: always
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+## pagehelper分页相关配置
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  returnPageInfo: check
+
 management:
   endpoint:
     health:
