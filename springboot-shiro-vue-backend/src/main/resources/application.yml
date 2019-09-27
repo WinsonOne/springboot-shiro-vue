@@ -1,7 +1,10 @@
 spring:
   application:
     name: springboot-shiro-vue-backend
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
 management:
   endpoint:
     health:
       show-details: always
+

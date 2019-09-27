@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- JDBC driver -->
+    <classPathEntry location="D:\Program Files\local\repo\mysql\mysql-connector-java\8.0.17\mysql-connector-java-8.0.17.jar" />
+
+    <context id="mysql" targetRuntime="MyBatis3">
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/springboot-shiro?characterEncoding=utf-8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false&amp;serverTimezone=GMT%2B8"
+                        userId="root"
+                        password="root123">
+        </jdbcConnection>
+        <!-- 类型转换 -->
+        <javaTypeResolver >
+            <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+        <!-- 配置pojo目录,需根据实际情况修改 -->
+        <javaModelGenerator targetPackage="xyz.winson.one.model.entity" targetProject="G:\theone\springboot-shiro-vue\springboot-shiro-vue-backend\src\main\java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+        <!-- 配置xml映射目录,需根据实际情况修改-->
+        <sqlMapGenerator targetPackage="mapper"  targetProject="G:\theone\springboot-shiro-vue\springboot-shiro-vue-backend\src\main\resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+        <!-- 配置dao目录,需根据实际情况修改 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="xyz.winson.one.mapper"  targetProject="G:\theone\springboot-shiro-vue\springboot-shiro-vue-backend\src\main\java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+        <table tableName="t_sys_user" domainObjectName="SysUser" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false"></table>
+        <table tableName="t_sys_role" domainObjectName="SysRole" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false"></table>
+        <table tableName="t_user_role" domainObjectName="SysUserRole" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false"></table>
+        <table tableName="t_sys_resource" domainObjectName="SysResource" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false"></table>
+        <table tableName="t_role_resource" domainObjectName="SysRoleResource" enableSelectByExample="false" enableDeleteByExample="false" enableCountByExample="false" enableUpdateByExample="false"></table>
+
+    </context>
+</generatorConfiguration>
