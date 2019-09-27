@@ -4,7 +4,7 @@
 ## 开发工具
 
 1. 后端开发工  
-后端使用IntelliJ IDEA作为开发工具，另外为了快速开发，需要IDEA中安装lombok、codehelper.generator插件。其中lombok可以避免编写对象模型的get、set方法，codehelper.generator可以生成mybatis操作数据库的实体类，配置文件等。插件具体用法不在此项目中进行详细描述，有兴趣了解的可以另外百度或Google。
+后端使用IntelliJ IDEA作为开发工具，另外为了快速开发，需要IDEA中安装lombok插件。其中lombok可以避免编写对象模型的get、set方法。
 
 2. 前端开发工具  
 前端是一个基于vue和element ui的项目，使用最新的前端技术栈。使用Visual Studio Code作为开发工具，配合Vetur、ESLint等扩展插件来保证开发代码的质量。

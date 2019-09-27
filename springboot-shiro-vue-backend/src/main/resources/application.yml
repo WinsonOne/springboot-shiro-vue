@@ -1,3 +1,7 @@
 spring:
   application:
     name: springboot-shiro-vue-backend
+management:
+  endpoint:
+    health:
+      show-details: always
