@@ -40,6 +40,7 @@ CREATE TABLE `t_sys_resource` (
                                   `parent_ids` varchar(128) DEFAULT NULL COMMENT '所有上级资源ID',
                                   `icon` varchar(64) DEFAULT NULL COMMENT '图标',
                                   `path` varchar(128) DEFAULT NULL COMMENT '访问路径',
+                                  `perm` varchar(128) DEFAULT NULL COMMENT '资源对应的权限',
                                   `remark` varchar(255) DEFAULT NULL COMMENT '备注信息',
                                   `state` int(11) NOT NULL DEFAULT '1' COMMENT '资源状态，1有效，0禁用',
                                   `is_delete` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否已删除，1是，0否',
