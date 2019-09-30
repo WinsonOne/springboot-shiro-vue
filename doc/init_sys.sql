@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80017
 File Encoding         : 65001
 
-Date: 2019-09-27 09:28:58
+Date: 2019-09-30 14:28:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -29,6 +29,10 @@ CREATE TABLE `t_role_resource` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='角色资源关系表';
 
 -- ----------------------------
+-- Records of t_role_resource
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for t_sys_resource
 -- ----------------------------
 DROP TABLE IF EXISTS `t_sys_resource`;
@@ -40,7 +44,6 @@ CREATE TABLE `t_sys_resource` (
                                   `parent_ids` varchar(128) DEFAULT NULL COMMENT '所有上级资源ID',
                                   `icon` varchar(64) DEFAULT NULL COMMENT '图标',
                                   `path` varchar(128) DEFAULT NULL COMMENT '访问路径',
-                                  `perm` varchar(128) DEFAULT NULL COMMENT '资源对应的权限',
                                   `remark` varchar(255) DEFAULT NULL COMMENT '备注信息',
                                   `state` int(11) NOT NULL DEFAULT '1' COMMENT '资源状态，1有效，0禁用',
                                   `is_delete` tinyint(4) NOT NULL DEFAULT '0' COMMENT '是否已删除，1是，0否',
@@ -48,8 +51,18 @@ CREATE TABLE `t_sys_resource` (
                                   `create_time` datetime NOT NULL COMMENT '创建时间',
                                   `update_user_id` bigint(20) DEFAULT NULL COMMENT '修改人ID',
                                   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+                                  `perm` varchar(128) DEFAULT NULL COMMENT '资源对应的权限',
+                                  `sort` int(11) NOT NULL COMMENT '资源排序',
                                   PRIMARY KEY (`resource_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统资源表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统资源表';
+
+-- ----------------------------
+-- Records of t_sys_resource
+-- ----------------------------
+INSERT INTO `t_sys_resource` VALUES ('1', '系统管理', '1', null, null, 'setting', 'system', null, '1', '0', '1', '2019-09-30 14:12:34', null, null, null, '1');
+INSERT INTO `t_sys_resource` VALUES ('2', '用户管理', '2', '1', '1', 'user', 'user', null, '1', '0', '1', '2019-09-30 14:13:18', null, null, null, '2');
+INSERT INTO `t_sys_resource` VALUES ('3', '角色管理', '2', '1', '1', 'role', 'role', null, '1', '0', '1', '2019-09-30 14:14:21', null, null, null, '3');
+INSERT INTO `t_sys_resource` VALUES ('4', '资源管理', '2', '1', '1', 'resource', 'resource', null, '1', '0', '1', '2019-09-30 14:22:56', null, null, null, '4');
 
 -- ----------------------------
 -- Table structure for t_sys_role
@@ -66,7 +79,12 @@ CREATE TABLE `t_sys_role` (
                               `update_user_id` bigint(20) DEFAULT NULL COMMENT '修改人ID',
                               `update_time` datetime DEFAULT NULL COMMENT '修改时间',
                               PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统角色表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统角色表';
+
+-- ----------------------------
+-- Records of t_sys_role
+-- ----------------------------
+INSERT INTO `t_sys_role` VALUES ('1', '测试角色', null, '1', '0', '1', '2019-09-27 19:57:26', null, null);
 
 -- ----------------------------
 -- Table structure for t_sys_user
@@ -90,6 +108,10 @@ CREATE TABLE `t_sys_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='系统用户表';
 
 -- ----------------------------
+-- Records of t_sys_user
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for t_user_role
 -- ----------------------------
 DROP TABLE IF EXISTS `t_user_role`;
@@ -101,3 +123,7 @@ CREATE TABLE `t_user_role` (
                                `create_time` datetime NOT NULL COMMENT '创建时间',
                                PRIMARY KEY (`user_role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='用户角色关系表';
+
+-- ----------------------------
+-- Records of t_user_role
+-- ----------------------------

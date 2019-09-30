@@ -76,6 +76,7 @@
 | path  | 访问路径  | varchar(64)  | 是  |  
 | perm  | 资源对应的权限  | varchar(128)  | 是  |  
 | remark  | 备注信息  | varchar(256)  | 是  |
+| sort  | 资源排序  | int  | 否  |
 | state  | 资源状态，1有效，0禁用  | int  | 否  |
 | is_delete  | 是否已删除，1是，0否  | tinyint  | 否  |
 | create_time  | 创建时间  | datetime  | 否  |
