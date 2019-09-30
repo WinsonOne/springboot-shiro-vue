@@ -144,4 +144,9 @@ public class SysResource {
      * @mbg.generated Fri Sep 27 13:31:36 CST 2019
      */
     private Date updateTime;
+
+    /**
+     * 菜单排序
+     */
+    private Integer sort;
 }

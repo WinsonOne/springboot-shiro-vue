@@ -1,6 +1,10 @@
 package xyz.winson.one.mapper;
 
 import xyz.winson.one.model.entity.SysUser;
+import xyz.winson.one.model.vo.SysUserVo;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Winson One
@@ -54,4 +58,18 @@ public interface SysUserMapper {
      * @return 成功更新记录数
      */
     int updateByPrimaryKey(SysUser record);
+
+    /**
+     * 查询系统用户列表
+     * @param query
+     * @return
+     */
+    List<SysUserVo> list(Map query);
+
+    /**
+     * 根据用户名查找用户信息
+     * @param username
+     * @return
+     */
+    SysUser selectByUsername(String username);
 }

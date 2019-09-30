@@ -1,6 +1,9 @@
 package xyz.winson.one.mapper;
 
 import xyz.winson.one.model.entity.SysResource;
+import xyz.winson.one.model.vo.SysResourceVo;
+
+import java.util.List;
 
 /**
  * @author Winson One
@@ -54,4 +57,10 @@ public interface SysResourceMapper {
      * @return 资源信息
      */
     int updateByPrimaryKey(SysResource record);
+
+    /**
+     * 查询系统资源列表
+     * @return
+     */
+    List<SysResourceVo> listAll();
 }
