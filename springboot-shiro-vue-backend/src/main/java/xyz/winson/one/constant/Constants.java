@@ -26,4 +26,9 @@ public class Constants {
      * 超级管理员用户ID
      */
     public static final Long SUPER_ADMIN_USER_ID = 1L;
+
+    /**
+     * 请求头中传递的token参数
+     */
+    public static final String AUTH_TOKEN = "auth_token";
 }

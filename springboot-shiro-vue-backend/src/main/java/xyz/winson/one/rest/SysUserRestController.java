@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import xyz.winson.one.group.UpdateGroup;
 import xyz.winson.one.model.dto.SysUserDto;
+import xyz.winson.one.model.entity.SysUser;
 import xyz.winson.one.model.vo.ApiResult;
 import xyz.winson.one.model.vo.PageQuery;
 import xyz.winson.one.model.vo.SysUserVo;
@@ -64,13 +65,12 @@ public class SysUserRestController extends BaseRestController {
 
     /**
      * 登录
-     * @param username
-     * @param password
+     * @param sysUser
      * @return
      */
     @PostMapping("/login")
-    public ApiResult<JwtAccount> login(@RequestParam(name = "username") String username, @RequestParam(name = "password") String password) {
-        return sysUserService.login(username, password);
+    public ApiResult<JwtAccount> login(@RequestBody SysUser sysUser) {
+        return sysUserService.login(sysUser);
     }
 
     @Autowired

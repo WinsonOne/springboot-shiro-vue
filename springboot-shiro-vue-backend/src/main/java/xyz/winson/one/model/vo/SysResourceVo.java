@@ -72,7 +72,7 @@ public class SysResourceVo {
     /**
      * 创建人
      */
-    private Long createUserNickname;
+    private String createUserNickname;
 
     /**
      * 创建时间
@@ -80,7 +80,7 @@ public class SysResourceVo {
     private Date createTime;
 
     /**
-     * 修改人ID
+     * 修改人
      */
     private String updateUserNickname;
 

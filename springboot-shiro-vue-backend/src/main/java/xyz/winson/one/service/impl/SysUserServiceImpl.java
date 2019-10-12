@@ -94,13 +94,16 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public ApiResult<JwtAccount> login(String username, String password) {
-        SysUser sysUser = sysUserMapper.selectByUsername(username);
+    public ApiResult<JwtAccount> login(SysUser loinUser) {
+        if (loinUser == null || StringUtils.isEmpty(loinUser.getUsername()) || StringUtils.isEmpty(loinUser.getPassword())) {
+            return ApiResultUtil.fail("缺少必要参数");
+        }
+        SysUser sysUser = sysUserMapper.selectByUsername(loinUser.getUsername());
         if (sysUser == null) {
             return ApiResultUtil.fail("用户名或密码错误");
         }
         EncryptUtil encryptUtil = EncryptUtil.getInstance();
-        String pass = encryptUtil.MD5(password, sysUser.getSalt());
+        String pass = encryptUtil.MD5(loinUser.getPassword(), sysUser.getSalt());
         if (!pass.equals(sysUser.getPassword())) {
             return ApiResultUtil.fail("用户名或密码错误");
         }

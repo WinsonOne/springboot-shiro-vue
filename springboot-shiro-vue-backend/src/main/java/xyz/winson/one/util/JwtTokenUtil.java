@@ -5,7 +5,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,27 +52,15 @@ public class JwtTokenUtil {
         account.setIat(iat);
         account.setExp(expiration);
         account.setToken(builder.sign(algorithm));
+        /**
+         * refresh token 过期时间
+         */
+        Date refreshTokenExpiration = Calendar.getInstance().getTime();
+        refreshTokenExpiration.setTime(expiration.getTime() + expire * 60 * 1000);
+        builder.withExpiresAt(refreshTokenExpiration);
+        String refreshToken = builder.sign(algorithm);
+        account.setRefreshToken(refreshToken);
         return account;
-    }
-
-    /**
-     * 校验token是否有效
-     * @param token
-     * @return
-     */
-    public boolean verify(String token) {
-        try {
-            Algorithm algorithm = Algorithm.HMAC256(secret);
-            JWTVerifier jwtVerifier = JWT.require(algorithm).build();
-            //效验TOKEN
-            DecodedJWT jwt = jwtVerifier.verify(token);
-            return true;
-        } catch (IllegalArgumentException e) {
-            log.error("校验token出错", e);
-        } catch (JWTVerificationException e) {
-            log.error("校验token出错", e);
-        }
-        return false;
     }
 
     /**
@@ -90,10 +77,7 @@ public class JwtTokenUtil {
             String subject = jwt.getSubject();
             UserPerm userPerm = JSONObject.parseObject(subject, UserPerm.class);
             return userPerm;
-        } catch (IllegalArgumentException e) {
-            log.error("校验token出错", e);
-        } catch (JWTVerificationException e) {
-            log.error("校验token出错", e);
+        } catch (Exception e) {
         }
         return null;
     }

@@ -21,6 +21,8 @@ public enum  ApiResultCodeEnum {
 
     NOT_UNIQUE_DATA(992, "数据唯一性校验不通过"),
 
+    TOKEN_EXPIRE(600, "token已过期"),
+
     DEFAULT(999, "接口调用失败，请稍后再试");
 
     private int code;

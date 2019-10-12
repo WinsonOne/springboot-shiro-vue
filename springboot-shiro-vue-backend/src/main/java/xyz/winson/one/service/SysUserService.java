@@ -38,9 +38,8 @@ public interface SysUserService {
 
     /**
      * 用户登录
-     * @param username
-     * @param password
+     * @param sysUser
      * @return
      */
-    ApiResult<JwtAccount> login(String username, String password);
+    ApiResult<JwtAccount> login(SysUser sysUser);
 }

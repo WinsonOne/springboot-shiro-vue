@@ -1,5 +1,6 @@
 package xyz.winson.one.rest;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -29,6 +30,7 @@ public class SysResourceRestController extends BaseRestController {
      * @return
      */
     @PostMapping("/list")
+    @RequiresPermissions("sys:resource:list")
     public ApiResult<List<SysResourceVo>> list() {
         return sysResourceService.listAll();
     }
