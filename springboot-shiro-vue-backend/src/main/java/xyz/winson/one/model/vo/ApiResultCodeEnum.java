@@ -9,7 +9,15 @@ public enum  ApiResultCodeEnum {
 
     SUCCESS(200,"成功"),
 
-    MISS_PARAM(901, "缺少必传参数"),
+    ADD_ERROR(801, "新增数据出错"),
+
+    UPDATE_ERROR(802, "修改数据出错"),
+
+    DELETE_ERROR(803, "删除数据出错"),
+
+    LOGICAL_DELETE_ERROR(804, "逻辑删除数据出错"),
+
+    PARAM_ERROR(901, "参数错误"),
 
     NOT_UNIQUE_DATA(992, "数据唯一性校验不通过"),
 

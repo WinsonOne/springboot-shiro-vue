@@ -25,4 +25,18 @@ public interface SysResourceService {
      * @return
      */
     ApiResult<Void> add(SysResourceDto sysResourceDto);
+
+    /**
+     * 修改系统资源
+     * @param sysResourceDto
+     * @return
+     */
+    ApiResult<Void> update(SysResourceDto sysResourceDto);
+
+    /**
+     * 逻辑删除系统资源
+     * @param ids
+     * @return
+     */
+    ApiResult<Void> delete(List<Long> ids);
 }

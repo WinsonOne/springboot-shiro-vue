@@ -43,7 +43,7 @@
     delete from t_sys_user
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="xyz.winson.one.model.entity.SysUser">
+  <insert id="insert" parameterType="xyz.winson.one.model.entity.SysUser" useGeneratedKeys="true" keyProperty="id">
     insert into t_sys_user (id, username, nickname, 
       password, salt, mobile, 
       email, state, is_delete, 
@@ -55,7 +55,7 @@
       #{createUserId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{updateUserId,jdbcType=BIGINT}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="xyz.winson.one.model.entity.SysUser">
+  <insert id="insertSelective" parameterType="xyz.winson.one.model.entity.SysUser" useGeneratedKeys="true" keyProperty="id">
     insert into t_sys_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -216,6 +216,6 @@
     select
     <include refid="Base_Column_List" />
     from t_sys_user
-    where t.is_delete = 0 and username = #{username,jdbcType=VARCHAR}
+    where is_delete = 0 and username = #{username,jdbcType=VARCHAR}
   </select>
 </mapper>

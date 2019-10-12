@@ -4,16 +4,14 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import xyz.winson.one.group.UpdateGroup;
 import xyz.winson.one.model.dto.SysUserDto;
 import xyz.winson.one.model.vo.ApiResult;
 import xyz.winson.one.model.vo.PageQuery;
 import xyz.winson.one.model.vo.SysUserVo;
 import xyz.winson.one.service.SysUserService;
+import xyz.winson.one.shiro.JwtAccount;
 
 /**
  * @author : 温伟聪
@@ -22,7 +20,7 @@ import xyz.winson.one.service.SysUserService;
  */
 @RestController
 @RequestMapping("/sys/user")
-public class SysUserRestController {
+public class SysUserRestController extends BaseRestController {
 
     /**
      * 分页查询系统用户列表数据
@@ -34,20 +32,45 @@ public class SysUserRestController {
         return sysUserService.list(pageQuery);
     }
 
+    /**
+     *
+     * @param sysUserDto 待新增用户信息
+     * @param bindingResult 参数校验结果
+     * @return
+     */
     @PostMapping("/add")
     public ApiResult<Void> add(@RequestBody @Validated SysUserDto sysUserDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // 参数校验不通过，提示前端
+            return error(bindingResult);
         }
         return sysUserService.add(sysUserDto);
     }
 
+    /**
+     *
+     * @param sysUserDto 待修改用户信息
+     * @param bindingResult 参数校验结果
+     * @return
+     */
     @PostMapping("/update")
     public ApiResult<Void> update(@RequestBody @Validated(value = {UpdateGroup.class}) SysUserDto sysUserDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // 参数校验不通过，提示前端
+            return error(bindingResult);
         }
         return sysUserService.update(sysUserDto);
+    }
+
+    /**
+     * 登录
+     * @param username
+     * @param password
+     * @return
+     */
+    @PostMapping("/login")
+    public ApiResult<JwtAccount> login(@RequestParam(name = "username") String username, @RequestParam(name = "password") String password) {
+        return sysUserService.login(username, password);
     }
 
     @Autowired

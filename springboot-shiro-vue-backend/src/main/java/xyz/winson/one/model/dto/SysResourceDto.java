@@ -1,6 +1,7 @@
 package xyz.winson.one.model.dto;
 
 import lombok.Data;
+import xyz.winson.one.group.UpdateGroup;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -15,6 +16,7 @@ public class SysResourceDto {
     /**
      * 资源ID
      */
+    @NotNull(groups = {UpdateGroup.class})
     private Long resourceId;
 
     /**

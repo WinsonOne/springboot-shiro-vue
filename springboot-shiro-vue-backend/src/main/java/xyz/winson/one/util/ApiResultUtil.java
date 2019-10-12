@@ -30,6 +30,10 @@ public class ApiResultUtil {
         return new ApiResult(apiResultCodeEnum);
     }
 
+    public static final ApiResult fail(String msg) {
+        return buildResult(ApiResultCodeEnum.DEFAULT, msg);
+    }
+
     public static final ApiResult buildResult(ApiResultCodeEnum apiResultCodeEnum, String msg, Object data) {
         ApiResult apiResult = new ApiResult(apiResultCodeEnum, msg);
         apiResult.setData(data);
@@ -38,5 +42,9 @@ public class ApiResultUtil {
 
     public static final ApiResult buildResult(ApiResultCodeEnum apiResultCodeEnum, String msg) {
         return buildResult(apiResultCodeEnum, msg, null);
+    }
+
+    public static final ApiResult buildResult(int code, String msg) {
+        return new ApiResult(code, msg);
     }
 }

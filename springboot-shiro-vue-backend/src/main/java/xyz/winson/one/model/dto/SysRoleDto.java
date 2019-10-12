@@ -1,5 +1,10 @@
 package xyz.winson.one.model.dto;
 
+import lombok.Data;
+import org.hibernate.validator.constraints.Length;
+import xyz.winson.one.group.UpdateGroup;
+
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 
@@ -8,15 +13,19 @@ import java.util.List;
  * @Description: 系统用户数据转换对象模型
  * @date Date : 2019年09月30日 10:34
  */
+@Data
 public class SysRoleDto {
     /**
      * 角色ID
      */
+    @NotNull(groups = {UpdateGroup.class}, message = "角色ID不能为空")
     private Long roleId;
 
     /**
      * 角色名称
      */
+    @NotNull(message = "角色名称不能为空")
+    @Length(max = 64, message = "角色名称长度不能超过64位")
     private String roleName;
 
     /**

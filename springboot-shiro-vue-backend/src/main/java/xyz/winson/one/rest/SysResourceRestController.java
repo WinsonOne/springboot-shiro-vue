@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import xyz.winson.one.group.UpdateGroup;
 import xyz.winson.one.model.dto.SysResourceDto;
 import xyz.winson.one.model.vo.ApiResult;
 import xyz.winson.one.model.vo.SysResourceVo;
@@ -21,19 +22,53 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/sys/resource")
-public class SysResourceRestController {
+public class SysResourceRestController extends BaseRestController {
 
+    /**
+     * 获取系统所有资源
+     * @return
+     */
     @PostMapping("/list")
     public ApiResult<List<SysResourceVo>> list() {
         return sysResourceService.listAll();
     }
 
+    /**
+     * 新增系统电子烟
+     * @param sysResourceDto 待新增系统资源
+     * @param bindingResult 参数校验结果
+     * @return
+     */
     @PostMapping("/add")
     public ApiResult<Void> add(@RequestBody @Validated SysResourceDto sysResourceDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            // 直接返回提示
+            return error(bindingResult);
         }
         return sysResourceService.add(sysResourceDto);
+    }
+
+    /**
+     * 修改系统资源
+     * @param sysResourceDto 待修改系统资源
+     * @param bindingResult 参数校验结果
+     * @return
+     */
+    @PostMapping("/update")
+    public ApiResult<Void> update(@RequestBody @Validated(value = {UpdateGroup.class}) SysResourceDto sysResourceDto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return error(bindingResult);
+        }
+        return sysResourceService.update(sysResourceDto);
+    }
+
+    /**
+     * 逻辑删除系统资源
+     * @param ids 待删除资源主键集合
+     * @return
+     */
+    @PostMapping("/delete")
+    public ApiResult<Void> delete(List<Long> ids) {
+        return sysResourceService.delete(ids);
     }
 
     @Autowired

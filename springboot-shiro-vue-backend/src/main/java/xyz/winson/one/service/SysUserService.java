@@ -6,6 +6,7 @@ import xyz.winson.one.model.entity.SysUser;
 import xyz.winson.one.model.vo.ApiResult;
 import xyz.winson.one.model.vo.PageQuery;
 import xyz.winson.one.model.vo.SysUserVo;
+import xyz.winson.one.shiro.JwtAccount;
 
 /**
  * @author : 温伟聪
@@ -34,4 +35,12 @@ public interface SysUserService {
      * @return
      */
     ApiResult<Void> update(SysUserDto sysUserDto);
+
+    /**
+     * 用户登录
+     * @param username
+     * @param password
+     * @return
+     */
+    ApiResult<JwtAccount> login(String username, String password);
 }

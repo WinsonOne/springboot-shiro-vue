@@ -6,6 +6,8 @@ import xyz.winson.one.model.vo.ApiResult;
 import xyz.winson.one.model.vo.PageQuery;
 import xyz.winson.one.model.vo.SysRoleVo;
 
+import java.util.List;
+
 /**
  * @author : 温伟聪
  * @Description: 系统角色服务接口
@@ -33,4 +35,11 @@ public interface SysRoleService {
      * @return
      */
     ApiResult<Void> update(SysRoleDto sysRoleDto);
+
+    /**
+     * 逻辑删除系统角色
+     * @param ids
+     * @return
+     */
+    ApiResult<Void> delete(List<Long> ids);
 }

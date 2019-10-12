@@ -44,4 +44,9 @@ public class ApiResult<T> {
             this.msg = apiResultCodeEnum.getMsg();
         }
     }
+
+    public ApiResult(int code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
 }

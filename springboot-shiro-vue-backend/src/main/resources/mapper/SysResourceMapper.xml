@@ -244,4 +244,27 @@
           left join t_sys_user cu on cu.id = r.create_user_id
           left join t_sys_user uu on uu.id = r.update_user_id where r.is_delete = 0
   </select>
+  <update id="logicalDelete" parameterType="map">
+    update t_sys_resource set is_delete = 1, update_user_id = #{updateUserId,jdbcType=BIGINT}, update_time = #{updateTime,jdbcType=TIMESTAMP}
+      where resource_id in
+      <foreach collection="ids" open="(" separator="," close=")" item="resourceId">
+        #{resourceId,jdbcType=BIGINT}
+      </foreach>
+  </update>
+  <select id="findByIds" parameterType="collection" resultMap="SysResourceVo">
+    select r.resource_id, r.resource_name, r.parent_id, r.parent_ids, r.icon, r.path, r.perm, r.remark, r.state, r.sort,
+           cu.nickname create_user_nickname, r.create_time, uu.nickname update_user_nickname, r.update_time, p.resource_name parent_name
+    from t_sys_resource r left join t_sys_resource p on r.parent_id = p.resource_id
+                          left join t_sys_user cu on cu.id = r.create_user_id
+                          left join t_sys_user uu on uu.id = r.update_user_id where r.is_delete = 0 and r.resource_id in
+    <foreach collection="resourceIds" separator="," open="(" close=")" item="resourceId">
+      #{resourceId,jdbcType=BIGINT}
+    </foreach>
+  </select>
+  <select id="findByUserId" parameterType="long" resultMap="BaseResultMap">
+    select r.resource_id, r.resource_name, r.resource_type, r.parent_id, r.parent_ids, r.icon, r.path, r.perm, r.remark,
+           r.state, r.is_delete, r.create_user_id, r.create_time, r.update_user_id, r.update_time, sort from t_sys_resource r
+           join t_role_resource rr on r.resource_id = rr.resource_id join t_user_role ur on ur.role_id = rr.role_id and ur.user_id = #{userId,jdbcType=BIGINT}
+            where r.is_delete = 0 and r.state = 1
+  </select>
 </mapper>

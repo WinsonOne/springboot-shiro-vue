@@ -94,4 +94,19 @@
       </if>
     </trim>
   </insert>
+  <delete id="deleteByRoleId" parameterType="long">
+    delete from t_role_resource where role_id = #{roleId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertList" parameterType="list">
+    insert into t_role_resource(role_id, resource_id, create_user_id, create_time) values
+    <foreach collection="list" item="item" separator=",">
+      (#{roleId,jdbcType=BIGINT},#{resourceId,jdbcType=BIGINT},#{createUserId,jdbcType=BIGINT},#{createTime,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+  <delete id="deleteByRoleIds" parameterType="list">
+    delete from t_role_resource where role_id in
+    <foreach collection="list" separator="," open="(" close=")" item="roleId">
+      #{roleId,jdbcType=BIGINT}
+    </foreach>
+  </delete>
 </mapper>

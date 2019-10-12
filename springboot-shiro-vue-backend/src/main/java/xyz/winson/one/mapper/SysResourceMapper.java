@@ -3,7 +3,10 @@ package xyz.winson.one.mapper;
 import xyz.winson.one.model.entity.SysResource;
 import xyz.winson.one.model.vo.SysResourceVo;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Winson One
@@ -63,4 +66,24 @@ public interface SysResourceMapper {
      * @return
      */
     List<SysResourceVo> listAll();
+
+    /**
+     * 逻辑删除系统资源
+     * @param map
+     */
+    void logicalDelete(Map<String, Object> map);
+
+    /**
+     * 根据资源ID集合获取资源信息集合
+     * @param resourceIds
+     * @return
+     */
+    List<SysResourceVo> findByIds(Collection<Long> resourceIds);
+
+    /**
+     * 根据用户ID朝招用户拥有的资源
+     * @param id
+     * @return
+     */
+    List<SysResource> findByUserId(Long id);
 }

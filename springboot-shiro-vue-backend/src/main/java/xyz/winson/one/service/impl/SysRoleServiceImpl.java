@@ -1,14 +1,26 @@
 package xyz.winson.one.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import xyz.winson.one.exception.GlobalException;
 import xyz.winson.one.mapper.SysRoleMapper;
+import xyz.winson.one.mapper.SysRoleResourceMapper;
 import xyz.winson.one.model.dto.SysRoleDto;
+import xyz.winson.one.model.entity.SysRole;
+import xyz.winson.one.model.entity.SysRoleResource;
 import xyz.winson.one.model.vo.ApiResult;
+import xyz.winson.one.model.vo.ApiResultCodeEnum;
 import xyz.winson.one.model.vo.PageQuery;
 import xyz.winson.one.model.vo.SysRoleVo;
 import xyz.winson.one.service.SysRoleService;
+import xyz.winson.one.util.ApiResultUtil;
+
+import java.util.*;
 
 /**
  * @author : 温伟聪
@@ -16,22 +28,102 @@ import xyz.winson.one.service.SysRoleService;
  * @date Date : 2019年09月30日 10:16
  */
 @Service
+@Log4j2
 public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public ApiResult<PageInfo<SysRoleVo>> list(PageQuery pageQuery) {
-        return null;
+        PageHelper.startPage(pageQuery.getPageNum(), pageQuery.getPageSize());
+        List<SysRoleVo> sysRoleVoList = sysRoleMapper.list(pageQuery.getQuery());
+        PageInfo<SysRoleVo> pageInfo = new PageInfo<>(sysRoleVoList);
+        return ApiResultUtil.success(pageInfo);
     }
 
     @Override
+    @Transactional(rollbackFor = GlobalException.class)
     public ApiResult<Void> add(SysRoleDto sysRoleDto) {
-        return null;
+        SysRole sysRole = new SysRole();
+        BeanUtils.copyProperties(sysRoleDto, sysRole);
+        Date createTime = Calendar.getInstance().getTime();
+        try {
+            sysRole.setCreateTime(createTime);
+            sysRoleMapper.insert(sysRole);
+            // 保存角色资源
+            saveRoleResource(sysRole.getRoleId(), sysRoleDto.getResourceIds(), createTime, sysRole.getCreateUserId());
+        } catch (Exception e) {
+            log.error("新增系统角色出错", e);
+            throw new GlobalException(ApiResultCodeEnum.ADD_ERROR, "新增系统角色出错");
+        }
+        return ApiResultUtil.success(null);
+    }
+
+    /**
+     * 保存角色资源关系，先删除角色关联的ID，然后保存新的关联
+     * @param roleId
+     * @param resourceIds
+     */
+    private void saveRoleResource(Long roleId, List<Long> resourceIds, Date createTime, Long createUserId) {
+        sysRoleResourceMapper.deleteByRoleId(roleId);
+        if (resourceIds != null && resourceIds.size() > 0) {
+            List<SysRoleResource> sysRoleResourceList = new ArrayList<>();
+            for (Long resourceId : resourceIds) {
+                SysRoleResource sysRoleResource = new SysRoleResource();
+                sysRoleResource.setRoleId(roleId);
+                sysRoleResource.setResourceId(resourceId);
+                sysRoleResource.setCreateTime(createTime);
+                sysRoleResource.setCreateUserId(createUserId);
+                sysRoleResourceList.add(sysRoleResource);
+            }
+            sysRoleResourceMapper.insertList(sysRoleResourceList);
+        }
     }
 
     @Override
+    @Transactional(rollbackFor = GlobalException.class)
     public ApiResult<Void> update(SysRoleDto sysRoleDto) {
-        return null;
+        SysRole sysRole = new SysRole();
+        BeanUtils.copyProperties(sysRoleDto, sysRole);
+        Date updateTime = Calendar.getInstance().getTime();
+        /**
+         * TODO 待补充修改人
+         */
+        sysRole.setUpdateTime(updateTime);
+        try {
+            sysRoleMapper.updateByPrimaryKey(sysRole);
+            // 保存角色资源
+            saveRoleResource(sysRole.getRoleId(), sysRoleDto.getResourceIds(), updateTime, sysRole.getUpdateUserId());
+        } catch (Exception e) {
+            log.error("修改系统角色出错", e);
+            throw new GlobalException(ApiResultCodeEnum.UPDATE_ERROR, "修改系统角色出错");
+        }
+        return ApiResultUtil.success(null);
+    }
+
+    @Override
+    public ApiResult<Void> delete(List<Long> ids) {
+        /**
+         * 修改系统角色为已删除
+         */
+        Map<String, Object> map = new HashMap<>(3);
+        map.put("ids", ids);
+        /**
+         * TODO 待补充修改人
+         */
+        map.put("updateUserId", null);
+        map.put("updateTime", Calendar.getInstance().getTime());
+        try {
+            sysRoleMapper.logicalDelete(map);
+            // 删除角色关联的角色资源
+            sysRoleResourceMapper.deleteByRoleIds(ids);
+        } catch (Exception e) {
+            log.error("删除系统角色出错", e);
+            throw new GlobalException(ApiResultCodeEnum.DELETE_ERROR, "删除系统角色出错");
+        }
+        return ApiResultUtil.success(null);
     }
 
     @Autowired
     private SysRoleMapper sysRoleMapper;
+
+    @Autowired
+    private SysRoleResourceMapper sysRoleResourceMapper;
 }

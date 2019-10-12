@@ -94,4 +94,15 @@
       </if>
     </trim>
   </insert>
+  <delete id="deleteByUserId" parameterType="long">
+    delete from t_user_role where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insertBatch" parameterType="list">
+    insert into t_user_role (user_id, role_id,
+                             create_user_id, create_time)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (#{item.userId,jdbcType=BIGINT}, #{item.roleId,jdbcType=BIGINT},#{item.createUserId,jdbcType=BIGINT}, #{item.createTime,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
 </mapper>

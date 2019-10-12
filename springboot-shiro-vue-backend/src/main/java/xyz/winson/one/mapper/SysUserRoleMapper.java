@@ -2,6 +2,8 @@ package xyz.winson.one.mapper;
 
 import xyz.winson.one.model.entity.SysUserRole;
 
+import java.util.List;
+
 /**
  * @author Winson One
  * @date 2019年09月27日 19:10
@@ -39,4 +41,17 @@ public interface SysUserRoleMapper {
      */
     SysUserRole selectByPrimaryKey(Long userRoleId);
 
+    /**
+     * 根据用户ID删除用户关联的角色
+     * @param id
+     * @return
+     */
+    int deleteByUserId(Long id);
+
+    /**
+     * 批量新增用户关联角色
+     * @param sysUserRoleList
+     * @return
+     */
+    int insertBatch(List<SysUserRole> sysUserRoleList);
 }
