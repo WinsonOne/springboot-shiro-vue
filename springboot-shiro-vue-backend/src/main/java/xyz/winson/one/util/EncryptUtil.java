@@ -235,4 +235,9 @@ public class EncryptUtil {
     private String base64(byte[] res){
         return Base64.encode(res);
     }
+
+    public static void main(String[] args) {
+        String password = getInstance().MD5("123456");
+        System.out.println(password);
+    }
 }

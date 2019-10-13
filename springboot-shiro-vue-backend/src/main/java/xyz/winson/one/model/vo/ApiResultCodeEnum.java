@@ -23,6 +23,8 @@ public enum  ApiResultCodeEnum {
 
     TOKEN_EXPIRE(600, "token已过期"),
 
+    INVALID_TOKEN(666, "无效token"),
+
     DEFAULT(999, "接口调用失败，请稍后再试");
 
     private int code;
