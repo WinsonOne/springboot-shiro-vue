@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import xyz.winson.one.constant.Constants;
 import xyz.winson.one.mapper.SysResourceMapper;
+import xyz.winson.one.mapper.SysRoleResourceMapper;
 import xyz.winson.one.model.dto.SysResourceDto;
 import xyz.winson.one.model.entity.SysResource;
 import xyz.winson.one.model.vo.ApiResult;
 import xyz.winson.one.model.vo.ApiResultCodeEnum;
 import xyz.winson.one.model.vo.SysResourceVo;
 import xyz.winson.one.service.SysResourceService;
+import xyz.winson.one.shiro.SysUserContext;
 import xyz.winson.one.util.ApiResultUtil;
 
 import java.util.Calendar;
@@ -47,9 +49,11 @@ public class SysResourceServiceImpl implements SysResourceService {
                 return ApiResultUtil.buildResult(ApiResultCodeEnum.PARAM_ERROR, "资源类型为目录或者菜单时，访问路径不能为空");
             }
         }
+        sysResource.setIsDelete(false);
         /**
-         * TODO 待补充创建人
+         * 充创建人
          */
+        sysResource.setCreateUserId(SysUserContext.getCurrentUser().getUserId());
         sysResource.setCreateTime(Calendar.getInstance().getTime());
         try {
             sysResourceMapper.insert(sysResource);
@@ -65,8 +69,9 @@ public class SysResourceServiceImpl implements SysResourceService {
         SysResource sysResource = new SysResource();
         BeanUtils.copyProperties(sysResourceDto, sysResource);
         /**
-         * TODO 待补充修改人
+         * 修改人
          */
+        sysResource.setUpdateUserId(SysUserContext.getCurrentUser().getUserId());
         sysResource.setUpdateTime(Calendar.getInstance().getTime());
         try {
             sysResourceMapper.updateByPrimaryKey(sysResource);
@@ -86,11 +91,13 @@ public class SysResourceServiceImpl implements SysResourceService {
         map.put("ids", ids);
         map.put("updateTime", Calendar.getInstance().getTime());
         /**
-         * TODO 待补充修改人
+         * 修改人
          */
-        map.put("updateUserId", null);
+        map.put("updateUserId", SysUserContext.getCurrentUser().getUserId());
         try {
             sysResourceMapper.logicalDelete(map);
+            // 删除角色资源关联
+            sysRoleResourceMapper.deleteByResourceIds(ids);
         } catch (Exception e) {
             log.error("删除系统资源出错", e);
             return ApiResultUtil.buildResult(ApiResultCodeEnum.LOGICAL_DELETE_ERROR, "删除系统资源出错");
@@ -100,4 +107,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 
     @Autowired
     private SysResourceMapper sysResourceMapper;
+
+    @Autowired
+    private SysRoleResourceMapper sysRoleResourceMapper;
 }

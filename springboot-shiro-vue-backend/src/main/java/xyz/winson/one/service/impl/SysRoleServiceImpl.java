@@ -10,14 +10,18 @@ import org.springframework.transaction.annotation.Transactional;
 import xyz.winson.one.exception.GlobalException;
 import xyz.winson.one.mapper.SysRoleMapper;
 import xyz.winson.one.mapper.SysRoleResourceMapper;
+import xyz.winson.one.mapper.SysUserRoleMapper;
 import xyz.winson.one.model.dto.SysRoleDto;
 import xyz.winson.one.model.entity.SysRole;
 import xyz.winson.one.model.entity.SysRoleResource;
+import xyz.winson.one.model.entity.SysUser;
+import xyz.winson.one.model.entity.SysUserRole;
 import xyz.winson.one.model.vo.ApiResult;
 import xyz.winson.one.model.vo.ApiResultCodeEnum;
 import xyz.winson.one.model.vo.PageQuery;
 import xyz.winson.one.model.vo.SysRoleVo;
 import xyz.winson.one.service.SysRoleService;
+import xyz.winson.one.shiro.SysUserContext;
 import xyz.winson.one.util.ApiResultUtil;
 
 import java.util.*;
@@ -43,8 +47,10 @@ public class SysRoleServiceImpl implements SysRoleService {
     public ApiResult<Void> add(SysRoleDto sysRoleDto) {
         SysRole sysRole = new SysRole();
         BeanUtils.copyProperties(sysRoleDto, sysRole);
+        sysRole.setIsDelete(false);
         Date createTime = Calendar.getInstance().getTime();
         try {
+            sysRole.setCreateUserId(SysUserContext.getCurrentUser().getUserId());
             sysRole.setCreateTime(createTime);
             sysRoleMapper.insert(sysRole);
             // 保存角色资源
@@ -84,8 +90,9 @@ public class SysRoleServiceImpl implements SysRoleService {
         BeanUtils.copyProperties(sysRoleDto, sysRole);
         Date updateTime = Calendar.getInstance().getTime();
         /**
-         * TODO 待补充修改人
+         * 修改人
          */
+        sysRole.setUpdateUserId(SysUserContext.getCurrentUser().getUserId());
         sysRole.setUpdateTime(updateTime);
         try {
             sysRoleMapper.updateByPrimaryKey(sysRole);
@@ -106,12 +113,14 @@ public class SysRoleServiceImpl implements SysRoleService {
         Map<String, Object> map = new HashMap<>(3);
         map.put("ids", ids);
         /**
-         * TODO 待补充修改人
+         * 修改人
          */
-        map.put("updateUserId", null);
+        map.put("updateUserId", SysUserContext.getCurrentUser().getUserId());
         map.put("updateTime", Calendar.getInstance().getTime());
         try {
             sysRoleMapper.logicalDelete(map);
+            // 删除用户角色关联关系
+            sysUserRoleMapper.deleteByRoleIds(ids);
             // 删除角色关联的角色资源
             sysRoleResourceMapper.deleteByRoleIds(ids);
         } catch (Exception e) {
@@ -123,6 +132,9 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Autowired
     private SysRoleMapper sysRoleMapper;
+
+    @Autowired
+    private SysUserRoleMapper sysUserRoleMapper;
 
     @Autowired
     private SysRoleResourceMapper sysRoleResourceMapper;

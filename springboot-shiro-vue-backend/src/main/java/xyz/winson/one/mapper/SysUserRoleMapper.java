@@ -54,4 +54,10 @@ public interface SysUserRoleMapper {
      * @return
      */
     int insertBatch(List<SysUserRole> sysUserRoleList);
+
+    /**
+     * 根据角色集合删除用户角色关联
+     * @param ids
+     */
+    void deleteByRoleIds(List<Long> ids);
 }

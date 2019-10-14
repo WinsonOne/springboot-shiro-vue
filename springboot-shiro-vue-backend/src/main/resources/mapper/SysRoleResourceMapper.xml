@@ -109,4 +109,10 @@
       #{roleId,jdbcType=BIGINT}
     </foreach>
   </delete>
+  <delete id="deleteByResourceIds" parameterType="list">
+    delete from t_role_resource where resource_id in
+    <foreach collection="list" separator="," open="(" close=")" item="resourceId">
+      #{resourceId,jdbcType=BIGINT}
+    </foreach>
+  </delete>
 </mapper>

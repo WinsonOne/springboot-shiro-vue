@@ -3,12 +3,14 @@ package xyz.winson.one.shiro;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.log4j.Log4j2;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMethod;
 import xyz.winson.one.constant.Constants;
 import xyz.winson.one.model.vo.ApiResult;
 import xyz.winson.one.model.vo.ApiResultCodeEnum;
+import xyz.winson.one.model.vo.UserPerm;
 import xyz.winson.one.util.ApiResultUtil;
 
 import javax.servlet.ServletRequest;
@@ -46,7 +48,10 @@ public class JwtAuthenticationFilter extends BasicHttpAuthenticationFilter {
         JwtToken jwtToken = JwtToken.builder().token(token).build();
         // 提交给realm进行登入，如果错误他会抛出异常并被捕获
         try {
-            getSubject(request, response).login(jwtToken);
+            Subject subject = getSubject(request, response);
+            subject.login(jwtToken);
+            UserPerm userPerm = (UserPerm) subject.getPrincipal();
+            SysUserContext context = new SysUserContext(userPerm);
         } catch (AuthenticationException e) {
             ApiResult apiResult = ApiResultUtil.fail(ApiResultCodeEnum.INVALID_TOKEN);
             HttpServletResponse httpServletResponse = (HttpServletResponse) response;

@@ -1,6 +1,7 @@
 package xyz.winson.one.rest;
 
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -29,6 +30,7 @@ public class SysUserRestController extends BaseRestController {
      * @return
      */
     @PostMapping("/list")
+    @RequiresPermissions("sys:user:list")
     public ApiResult<PageInfo<SysUserVo>> list(@RequestBody PageQuery pageQuery) {
         return sysUserService.list(pageQuery);
     }
@@ -40,6 +42,7 @@ public class SysUserRestController extends BaseRestController {
      * @return
      */
     @PostMapping("/add")
+    @RequiresPermissions("sys:user:add")
     public ApiResult<Void> add(@RequestBody @Validated SysUserDto sysUserDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // 参数校验不通过，提示前端
@@ -55,6 +58,7 @@ public class SysUserRestController extends BaseRestController {
      * @return
      */
     @PostMapping("/update")
+    @RequiresPermissions("sys:user:update")
     public ApiResult<Void> update(@RequestBody @Validated(value = {UpdateGroup.class}) SysUserDto sysUserDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // 参数校验不通过，提示前端

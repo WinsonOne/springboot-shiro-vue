@@ -20,6 +20,7 @@ import xyz.winson.one.model.entity.SysUserRole;
 import xyz.winson.one.model.vo.*;
 import xyz.winson.one.service.SysUserService;
 import xyz.winson.one.shiro.JwtAccount;
+import xyz.winson.one.shiro.SysUserContext;
 import xyz.winson.one.util.ApiResultUtil;
 import xyz.winson.one.util.EncryptUtil;
 import xyz.winson.one.util.JwtTokenUtil;
@@ -56,13 +57,15 @@ public class SysUserServiceImpl implements SysUserService {
         sysUser.setSalt(salt);
         EncryptUtil encryptUtil = EncryptUtil.getInstance();
         sysUser.setPassword(encryptUtil.MD5(sysUser.getPassword(), salt));
+        sysUser.setCreateUserId(SysUserContext.getCurrentUser().getUserId());
         sysUser.setCreateTime(Calendar.getInstance().getTime());
+        sysUser.setIsDelete(false);
         try {
             sysUserMapper.insert(sysUser);
             /**
              * 保存用户角色
              */
-            saveUserRoles(sysUser, sysUserDto.getRoleIds());
+            saveUserRoles(sysUser.getId(), sysUserDto.getRoleIds(), SysUserContext.getCurrentUser().getUserId(), sysUser.getCreateTime());
         } catch (Exception e) {
             log.error("新增系统用户出错", e);
             throw new GlobalException(ApiResultCodeEnum.ADD_ERROR, "新增系统用户出错");
@@ -70,18 +73,25 @@ public class SysUserServiceImpl implements SysUserService {
         return ApiResultUtil.success(null);
     }
 
-    private void saveUserRoles(SysUser sysUser, List<Long> roleIds) {
+    /**
+     * 保存用户角色关系
+     * @param userId
+     * @param roleIds
+     * @param createUserId
+     * @param createTime
+     */
+    private void saveUserRoles(Long userId, List<Long> roleIds, Long createUserId, Date createTime) {
         // 首先删除之前关联的角色
-        sysUserRoleMapper.deleteByUserId(sysUser.getId());
+        sysUserRoleMapper.deleteByUserId(userId);
         if (roleIds != null && roleIds.size() > 0) {
             // 新增用户角色关联
             List<SysUserRole> sysUserRoleList = new ArrayList<>();
             for (Long roleId : roleIds) {
                 SysUserRole sysUserRole = new SysUserRole();
                 sysUserRole.setRoleId(roleId);
-                sysUserRole.setUserId(sysUser.getId());
-                sysUserRole.setCreateUserId(sysUser.getCreateUserId());
-                sysUserRole.setCreateTime(sysUser.getCreateTime());
+                sysUserRole.setUserId(userId);
+                sysUserRole.setCreateUserId(createUserId);
+                sysUserRole.setCreateTime(createTime);
                 sysUserRoleList.add(sysUserRole);
             }
             sysUserRoleMapper.insertBatch(sysUserRoleList);
@@ -89,8 +99,21 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    @Transactional(rollbackFor = GlobalException.class)
     public ApiResult<Void> update(SysUserDto sysUserDto) {
-        return null;
+        SysUser sysUser = new SysUser();
+        BeanUtils.copyProperties(sysUserDto, sysUser);
+        Long currentUserId = SysUserContext.getCurrentUser().getUserId();
+        Date now = Calendar.getInstance().getTime();
+        sysUser.setUpdateUserId(currentUserId);
+        sysUser.setUpdateTime(now);
+        try {
+            sysUserMapper.updateByPrimaryKeySelective(sysUser);
+            saveUserRoles(sysUser.getId(), sysUserDto.getRoleIds(), currentUserId, now);
+        } catch (Exception e) {
+            throw new GlobalException(ApiResultCodeEnum.UPDATE_ERROR, "修改系统用户信息出错");
+        }
+        return ApiResultUtil.success(null);
     }
 
     @Override

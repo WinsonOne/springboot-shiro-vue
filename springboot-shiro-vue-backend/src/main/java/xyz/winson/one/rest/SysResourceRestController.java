@@ -42,6 +42,7 @@ public class SysResourceRestController extends BaseRestController {
      * @return
      */
     @PostMapping("/add")
+    @RequiresPermissions("sys:resource:add")
     public ApiResult<Void> add(@RequestBody @Validated SysResourceDto sysResourceDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return error(bindingResult);
@@ -56,6 +57,7 @@ public class SysResourceRestController extends BaseRestController {
      * @return
      */
     @PostMapping("/update")
+    @RequiresPermissions("sys:resource:update")
     public ApiResult<Void> update(@RequestBody @Validated(value = {UpdateGroup.class}) SysResourceDto sysResourceDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return error(bindingResult);
@@ -69,6 +71,7 @@ public class SysResourceRestController extends BaseRestController {
      * @return
      */
     @PostMapping("/delete")
+    @RequiresPermissions("sys:resource:delete")
     public ApiResult<Void> delete(List<Long> ids) {
         return sysResourceService.delete(ids);
     }

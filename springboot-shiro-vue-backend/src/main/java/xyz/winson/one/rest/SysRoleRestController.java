@@ -1,6 +1,7 @@
 package xyz.winson.one.rest;
 
 import com.github.pagehelper.PageInfo;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -32,6 +33,7 @@ public class SysRoleRestController extends BaseRestController {
      * @return 系统角色集合
      */
     @PostMapping("/list")
+    @RequiresPermissions("sys:role:list")
     public ApiResult<PageInfo<SysRoleVo>> list(@RequestBody PageQuery pageQuery) {
         return sysRoleService.list(pageQuery);
     }
@@ -43,6 +45,7 @@ public class SysRoleRestController extends BaseRestController {
      * @return
      */
     @PostMapping("/add")
+    @RequiresPermissions("sys:role:add")
     public ApiResult<Void> add(@RequestBody @Validated SysRoleDto sysRoleDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return error(bindingResult);
@@ -57,6 +60,7 @@ public class SysRoleRestController extends BaseRestController {
      * @return
      */
     @PostMapping("/update")
+    @RequiresPermissions("sys:role:update")
     public ApiResult<Void> update(@RequestBody @Validated(value = {UpdateGroup.class}) SysRoleDto sysRoleDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return error(bindingResult);
@@ -70,6 +74,7 @@ public class SysRoleRestController extends BaseRestController {
      * @return
      */
     @PostMapping("/delete")
+    @RequiresPermissions("sys:role:delete")
     public ApiResult<Void> delete(List<Long> ids) {
         return sysRoleService.delete(ids);
     }

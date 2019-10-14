@@ -159,6 +159,7 @@
       </if>
   </select>
   <update id="logicalDelete" parameterType="map">
-
+    update t_sys_role set is_delete = 1, update_user_id = #{updateUserId,jdbcType=BIGINT}, update_time = #{updateTime,jdbcType=TIMESTAMP} where role_id in <foreach
+          collection="list" item="roleId" open="(" close=")" separator=",">#{roleId,jdbcType=BIGINT}</foreach>
   </update>
 </mapper>

@@ -61,4 +61,10 @@ public interface SysRoleResourceMapper {
      * @return
      */
     int deleteByRoleIds(List<Long> ids);
+
+    /**
+     * 根据资源ID集合删除角色资源关联
+     * @param ids
+     */
+    void deleteByResourceIds(List<Long> ids);
 }
