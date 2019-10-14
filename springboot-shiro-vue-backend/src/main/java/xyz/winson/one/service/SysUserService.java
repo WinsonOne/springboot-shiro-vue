@@ -5,8 +5,11 @@ import xyz.winson.one.model.dto.SysUserDto;
 import xyz.winson.one.model.entity.SysUser;
 import xyz.winson.one.model.vo.ApiResult;
 import xyz.winson.one.model.vo.PageQuery;
+import xyz.winson.one.model.vo.SysResourceVo;
 import xyz.winson.one.model.vo.SysUserVo;
 import xyz.winson.one.shiro.JwtAccount;
+
+import java.util.List;
 
 /**
  * @author : 温伟聪
@@ -42,4 +45,10 @@ public interface SysUserService {
      * @return
      */
     ApiResult<JwtAccount> login(SysUser sysUser);
+
+    /**
+     * 获取当前用户的资源
+     * @return
+     */
+    ApiResult<List<SysResourceVo>> getUserResources();
 }

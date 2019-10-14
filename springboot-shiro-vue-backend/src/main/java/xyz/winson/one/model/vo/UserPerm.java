@@ -2,6 +2,7 @@ package xyz.winson.one.model.vo;
 
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -21,4 +22,9 @@ public class UserPerm {
      * 用户拥有的权限
      */
     private Set<String> perms;
+
+    /**
+     * 用户拥有的资源
+     */
+    private List<SysResourceVo> resourceList;
 }

@@ -132,29 +132,19 @@ public class SysUserServiceImpl implements SysUserService {
         }
         UserPerm userPerm = new UserPerm();
         userPerm.setUserId(sysUser.getId());
-        Set<String> perms = findUserPermissions(sysUser.getId());
-        userPerm.setPerms(perms);
+        List<SysResourceVo> resourceList = findUserResources(sysUser.getId());
+        userPerm.setResourceList(resourceList);
+        userPerm.setPerms(retrievePermissions(resourceList));
         JwtAccount account = new JwtAccount();
         account.setIat(Calendar.getInstance().getTime());
         JwtAccount jwtAccount = jwtTokenUtil.issueJwt(userPerm);
         return ApiResultUtil.success(jwtAccount);
     }
 
-    /**
-     * 根据用户ID，获取用户拥有的权限
-     * @param id
-     * @return
-     */
-    private Set<String> findUserPermissions(Long id) {
-        List<SysResourceVo> sysResourceVoList;
-        if (Constants.SUPER_ADMIN_USER_ID.equals(id)) {
-            // 超级管理员拥有所有的权限
-            sysResourceVoList = sysResourceMapper.listAll();
-        } else {
-            // 不是超级管理员，需要根据用户拥有的角色去查询拥有的资源
-            sysResourceVoList = findUserResources(id);
-        }
-        return retrievePermissions(sysResourceVoList);
+    @Override
+    public ApiResult<List<SysResourceVo>> getUserResources() {
+        UserPerm userPerm = SysUserContext.getCurrentUser();
+        return ApiResultUtil.success(userPerm.getResourceList());
     }
 
     /**
@@ -164,17 +154,24 @@ public class SysUserServiceImpl implements SysUserService {
      */
     private List<SysResourceVo> findUserResources(Long id) {
         Set<Long> resourceIds = new HashSet<>();
-        List<SysResource> sysResources = sysResourceMapper.findByUserId(id);
-        for (SysResource resource : sysResources) {
-            resourceIds.add(resource.getResourceId());
-            if (StringUtils.isEmpty(resource.getParentIds())) {
-                String[] resourceIdArray = resource.getParentIds().split(",");
-                for (String parentId : resourceIdArray) {
-                    resourceIds.add(Long.parseLong(parentId));
+        List<SysResourceVo> sysResourceVoList;
+        if (Constants.SUPER_ADMIN_USER_ID.equals(id)) {
+            // 超级管理员拥有所有的权限
+            sysResourceVoList = sysResourceMapper.listAll();
+        } else {
+            // 不是超级管理员，需要根据用户拥有的角色去查询拥有的资源
+            List<SysResource> sysResources = sysResourceMapper.findByUserId(id);
+            for (SysResource resource : sysResources) {
+                resourceIds.add(resource.getResourceId());
+                if (StringUtils.isEmpty(resource.getParentIds())) {
+                    String[] resourceIdArray = resource.getParentIds().split(",");
+                    for (String parentId : resourceIdArray) {
+                        resourceIds.add(Long.parseLong(parentId));
+                    }
                 }
             }
+            sysResourceVoList = sysResourceMapper.findByIds(resourceIds);
         }
-        List<SysResourceVo> sysResourceVoList = sysResourceMapper.findByIds(resourceIds);
         return sysResourceVoList;
     }
 

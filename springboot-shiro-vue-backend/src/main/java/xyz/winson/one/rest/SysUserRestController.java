@@ -11,9 +11,12 @@ import xyz.winson.one.model.dto.SysUserDto;
 import xyz.winson.one.model.entity.SysUser;
 import xyz.winson.one.model.vo.ApiResult;
 import xyz.winson.one.model.vo.PageQuery;
+import xyz.winson.one.model.vo.SysResourceVo;
 import xyz.winson.one.model.vo.SysUserVo;
 import xyz.winson.one.service.SysUserService;
 import xyz.winson.one.shiro.JwtAccount;
+
+import java.util.List;
 
 /**
  * @author : 温伟聪
@@ -75,6 +78,15 @@ public class SysUserRestController extends BaseRestController {
     @PostMapping("/login")
     public ApiResult<JwtAccount> login(@RequestBody SysUser sysUser) {
         return sysUserService.login(sysUser);
+    }
+
+    /**
+     * 获取登录用户的资源
+     * @return
+     */
+    @GetMapping("/resources")
+    public ApiResult<List<SysResourceVo>> getUserResources() {
+        return sysUserService.getUserResources();
     }
 
     @Autowired
