@@ -12,7 +12,7 @@
     <result column="update_user_id" jdbcType="BIGINT" property="updateUserId" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
-  <resultMap id="SysRoleVo" type="xyz.winson.one.model.vo.SysRoleVo">
+  <resultMap id="SysRoleVo" type="xyz.winson.one.model.vo.SysRoleVO">
     <id column="role_id" jdbcType="BIGINT" property="roleId" />
     <result column="role_name" jdbcType="VARCHAR" property="roleName" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />

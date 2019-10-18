@@ -17,7 +17,7 @@ import java.util.List;
  * @date Date : 2019年09月30日 10:42
  */
 @Data
-public class SysUserDto {
+public class SysUserDTO {
     /**
      * 用户ID，自增主键
      */

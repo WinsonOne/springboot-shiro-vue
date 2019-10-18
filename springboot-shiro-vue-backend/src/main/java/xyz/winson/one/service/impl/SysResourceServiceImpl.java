@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 import xyz.winson.one.constant.Constants;
 import xyz.winson.one.mapper.SysResourceMapper;
 import xyz.winson.one.mapper.SysRoleResourceMapper;
-import xyz.winson.one.model.dto.SysResourceDto;
+import xyz.winson.one.model.dto.SysResourceDTO;
 import xyz.winson.one.model.entity.SysResource;
 import xyz.winson.one.model.vo.ApiResult;
 import xyz.winson.one.model.vo.ApiResultCodeEnum;
-import xyz.winson.one.model.vo.SysResourceVo;
+import xyz.winson.one.model.vo.SysResourceVO;
 import xyz.winson.one.service.SysResourceService;
 import xyz.winson.one.shiro.SysUserContext;
 import xyz.winson.one.util.ApiResultUtil;
@@ -32,12 +32,12 @@ import java.util.Map;
 public class SysResourceServiceImpl implements SysResourceService {
 
     @Override
-    public ApiResult<List<SysResourceVo>> listAll() {
+    public ApiResult<List<SysResourceVO>> listAll() {
         return ApiResultUtil.success(sysResourceMapper.listAll());
     }
 
     @Override
-    public ApiResult<Void> add(SysResourceDto sysResourceDto) {
+    public ApiResult<Void> add(SysResourceDTO sysResourceDto) {
         SysResource sysResource = new SysResource();
         BeanUtils.copyProperties(sysResourceDto, sysResource);
         if (Constants.BTN == sysResource.getResourceType()) {
@@ -65,7 +65,7 @@ public class SysResourceServiceImpl implements SysResourceService {
     }
 
     @Override
-    public ApiResult<Void> update(SysResourceDto sysResourceDto) {
+    public ApiResult<Void> update(SysResourceDTO sysResourceDto) {
         SysResource sysResource = new SysResource();
         BeanUtils.copyProperties(sysResourceDto, sysResource);
         /**

@@ -1,10 +1,10 @@
 package xyz.winson.one.service;
 
 import com.github.pagehelper.PageInfo;
-import xyz.winson.one.model.dto.SysRoleDto;
+import xyz.winson.one.model.dto.SysRoleDTO;
 import xyz.winson.one.model.vo.ApiResult;
 import xyz.winson.one.model.vo.PageQuery;
-import xyz.winson.one.model.vo.SysRoleVo;
+import xyz.winson.one.model.vo.SysRoleVO;
 
 import java.util.List;
 
@@ -20,21 +20,21 @@ public interface SysRoleService {
      * @param pageQuery
      * @return
      */
-    ApiResult<PageInfo<SysRoleVo>> list(PageQuery pageQuery);
+    ApiResult<PageInfo<SysRoleVO>> list(PageQuery pageQuery);
 
     /**
      * 新增系统角色
      * @param sysRoleDto
      * @return
      */
-    ApiResult<Void> add(SysRoleDto sysRoleDto);
+    ApiResult<Void> add(SysRoleDTO sysRoleDto);
 
     /**
      * 修改系统角色
      * @param sysRoleDto
      * @return
      */
-    ApiResult<Void> update(SysRoleDto sysRoleDto);
+    ApiResult<Void> update(SysRoleDTO sysRoleDto);
 
     /**
      * 逻辑删除系统角色

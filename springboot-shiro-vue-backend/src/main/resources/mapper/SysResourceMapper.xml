@@ -19,7 +19,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="sort" jdbcType="INTEGER" property="sort" />
   </resultMap>
-  <resultMap id="SysResourceVo" type="xyz.winson.one.model.vo.SysResourceVo">
+  <resultMap id="SysResourceVo" type="xyz.winson.one.model.vo.SysResourceVO">
     <id column="resource_id" jdbcType="BIGINT" property="resourceId" />
     <result column="resource_name" jdbcType="VARCHAR" property="resourceName" />
     <result column="resource_type" jdbcType="INTEGER" property="resourceType" />

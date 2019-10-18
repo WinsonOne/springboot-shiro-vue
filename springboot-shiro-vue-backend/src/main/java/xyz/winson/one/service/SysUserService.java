@@ -1,12 +1,12 @@
 package xyz.winson.one.service;
 
 import com.github.pagehelper.PageInfo;
-import xyz.winson.one.model.dto.SysUserDto;
+import xyz.winson.one.model.dto.SysUserDTO;
 import xyz.winson.one.model.entity.SysUser;
 import xyz.winson.one.model.vo.ApiResult;
 import xyz.winson.one.model.vo.PageQuery;
-import xyz.winson.one.model.vo.SysResourceVo;
-import xyz.winson.one.model.vo.SysUserVo;
+import xyz.winson.one.model.vo.SysResourceVO;
+import xyz.winson.one.model.vo.SysUserVO;
 import xyz.winson.one.shiro.JwtAccount;
 
 import java.util.List;
@@ -23,21 +23,21 @@ public interface SysUserService {
      * @param pageQuery 分页查询
      * @return
      */
-    ApiResult<PageInfo<SysUserVo>> list(PageQuery pageQuery);
+    ApiResult<PageInfo<SysUserVO>> list(PageQuery pageQuery);
 
     /**
      * 新增系统用户
      * @param sysUserDto 待系统用户
      * @return
      */
-    ApiResult<Void> add(SysUserDto sysUserDto);
+    ApiResult<Void> add(SysUserDTO sysUserDto);
 
     /**
      * 修改系统用户
      * @param sysUserDto 待修改系统用户
      * @return
      */
-    ApiResult<Void> update(SysUserDto sysUserDto);
+    ApiResult<Void> update(SysUserDTO sysUserDto);
 
     /**
      * 用户登录
@@ -50,5 +50,5 @@ public interface SysUserService {
      * 获取当前用户的资源
      * @return
      */
-    ApiResult<List<SysResourceVo>> getUserResources();
+    ApiResult<List<SysResourceVO>> getUserResources();
 }

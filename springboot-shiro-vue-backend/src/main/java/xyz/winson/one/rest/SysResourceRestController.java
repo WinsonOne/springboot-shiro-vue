@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.winson.one.group.UpdateGroup;
-import xyz.winson.one.model.dto.SysResourceDto;
+import xyz.winson.one.model.dto.SysResourceDTO;
 import xyz.winson.one.model.vo.ApiResult;
-import xyz.winson.one.model.vo.SysResourceVo;
+import xyz.winson.one.model.vo.SysResourceVO;
 import xyz.winson.one.service.SysResourceService;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class SysResourceRestController extends BaseRestController {
      */
     @PostMapping("/list")
     @RequiresPermissions("sys:resource:list")
-    public ApiResult<List<SysResourceVo>> list() {
+    public ApiResult<List<SysResourceVO>> list() {
         return sysResourceService.listAll();
     }
 
@@ -43,7 +43,7 @@ public class SysResourceRestController extends BaseRestController {
      */
     @PostMapping("/add")
     @RequiresPermissions("sys:resource:add")
-    public ApiResult<Void> add(@RequestBody @Validated SysResourceDto sysResourceDto, BindingResult bindingResult) {
+    public ApiResult<Void> add(@RequestBody @Validated SysResourceDTO sysResourceDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return error(bindingResult);
         }
@@ -58,7 +58,7 @@ public class SysResourceRestController extends BaseRestController {
      */
     @PostMapping("/update")
     @RequiresPermissions("sys:resource:update")
-    public ApiResult<Void> update(@RequestBody @Validated(value = {UpdateGroup.class}) SysResourceDto sysResourceDto, BindingResult bindingResult) {
+    public ApiResult<Void> update(@RequestBody @Validated(value = {UpdateGroup.class}) SysResourceDTO sysResourceDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return error(bindingResult);
         }

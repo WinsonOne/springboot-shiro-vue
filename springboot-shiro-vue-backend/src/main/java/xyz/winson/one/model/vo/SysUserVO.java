@@ -10,7 +10,7 @@ import java.util.Date;
  * @date Date : 2019年09月29日 20:00
  */
 @Data
-public class SysUserVo {
+public class SysUserVO {
 
     /**
      * 用户ID，自增主键

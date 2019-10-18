@@ -1,7 +1,7 @@
 package xyz.winson.one.mapper;
 
 import xyz.winson.one.model.entity.SysRole;
-import xyz.winson.one.model.vo.SysRoleVo;
+import xyz.winson.one.model.vo.SysRoleVO;
 
 import java.util.List;
 import java.util.Map;
@@ -64,7 +64,7 @@ public interface SysRoleMapper {
      * @param query
      * @return
      */
-    List<SysRoleVo> list(Map query);
+    List<SysRoleVO> list(Map query);
 
     /**
      * 逻辑删除系统角色，修改为已删除

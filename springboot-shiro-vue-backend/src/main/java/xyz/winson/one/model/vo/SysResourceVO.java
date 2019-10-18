@@ -10,7 +10,7 @@ import java.util.Date;
  * @date Date : 2019年09月30日 11:43
  */
 @Data
-public class SysResourceVo {
+public class SysResourceVO {
     /**
      * 资源ID
      */

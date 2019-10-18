@@ -13,7 +13,7 @@ import xyz.winson.one.exception.GlobalException;
 import xyz.winson.one.mapper.SysResourceMapper;
 import xyz.winson.one.mapper.SysUserMapper;
 import xyz.winson.one.mapper.SysUserRoleMapper;
-import xyz.winson.one.model.dto.SysUserDto;
+import xyz.winson.one.model.dto.SysUserDTO;
 import xyz.winson.one.model.entity.SysResource;
 import xyz.winson.one.model.entity.SysUser;
 import xyz.winson.one.model.entity.SysUserRole;
@@ -37,16 +37,16 @@ import java.util.*;
 @Log4j2
 public class SysUserServiceImpl implements SysUserService {
     @Override
-    public ApiResult<PageInfo<SysUserVo>> list(PageQuery pageQuery) {
+    public ApiResult<PageInfo<SysUserVO>> list(PageQuery pageQuery) {
         PageHelper.startPage(pageQuery.getPageNum(), pageQuery.getPageSize());
-        List<SysUserVo> sysUserVoList = sysUserMapper.list(pageQuery.getQuery());
-        PageInfo<SysUserVo> pageInfo = new PageInfo<>(sysUserVoList);
+        List<SysUserVO> sysUserVOList = sysUserMapper.list(pageQuery.getQuery());
+        PageInfo<SysUserVO> pageInfo = new PageInfo<>(sysUserVOList);
         return ApiResultUtil.success(pageInfo);
     }
 
     @Override
     @Transactional(rollbackFor = GlobalException.class)
-    public ApiResult<Void> add(SysUserDto sysUserDto) {
+    public ApiResult<Void> add(SysUserDTO sysUserDto) {
         SysUser dbSysUser = sysUserMapper.selectByUsername(sysUserDto.getUsername());
         if (dbSysUser != null) {
             return ApiResultUtil.buildResult(ApiResultCodeEnum.NOT_UNIQUE_DATA, "用户名已存在，请修改。");
@@ -100,7 +100,7 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     @Transactional(rollbackFor = GlobalException.class)
-    public ApiResult<Void> update(SysUserDto sysUserDto) {
+    public ApiResult<Void> update(SysUserDTO sysUserDto) {
         SysUser sysUser = new SysUser();
         BeanUtils.copyProperties(sysUserDto, sysUser);
         Long currentUserId = SysUserContext.getCurrentUser().getUserId();
@@ -132,7 +132,7 @@ public class SysUserServiceImpl implements SysUserService {
         }
         UserPerm userPerm = new UserPerm();
         userPerm.setUserId(sysUser.getId());
-        List<SysResourceVo> resourceList = findUserResources(sysUser.getId());
+        List<SysResourceVO> resourceList = findUserResources(sysUser.getId());
         userPerm.setResourceList(resourceList);
         userPerm.setPerms(retrievePermissions(resourceList));
         JwtAccount account = new JwtAccount();
@@ -142,7 +142,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
-    public ApiResult<List<SysResourceVo>> getUserResources() {
+    public ApiResult<List<SysResourceVO>> getUserResources() {
         UserPerm userPerm = SysUserContext.getCurrentUser();
         return ApiResultUtil.success(userPerm.getResourceList());
     }
@@ -152,12 +152,12 @@ public class SysUserServiceImpl implements SysUserService {
      * @param id
      * @return
      */
-    private List<SysResourceVo> findUserResources(Long id) {
+    private List<SysResourceVO> findUserResources(Long id) {
         Set<Long> resourceIds = new HashSet<>();
-        List<SysResourceVo> sysResourceVoList;
+        List<SysResourceVO> sysResourceVOList;
         if (Constants.SUPER_ADMIN_USER_ID.equals(id)) {
             // 超级管理员拥有所有的权限
-            sysResourceVoList = sysResourceMapper.listAll();
+            sysResourceVOList = sysResourceMapper.listAll();
         } else {
             // 不是超级管理员，需要根据用户拥有的角色去查询拥有的资源
             List<SysResource> sysResources = sysResourceMapper.findByUserId(id);
@@ -170,21 +170,21 @@ public class SysUserServiceImpl implements SysUserService {
                     }
                 }
             }
-            sysResourceVoList = sysResourceMapper.findByIds(resourceIds);
+            sysResourceVOList = sysResourceMapper.findByIds(resourceIds);
         }
-        return sysResourceVoList;
+        return sysResourceVOList;
     }
 
     /**
      * 抽取资源中关联的权限
-     * @param sysResourceVoList
+     * @param sysResourceVOList
      * @return
      */
-    private Set<String> retrievePermissions(List<SysResourceVo> sysResourceVoList) {
+    private Set<String> retrievePermissions(List<SysResourceVO> sysResourceVOList) {
         Set<String> permissions = new HashSet<>();
         String perm;
         String[] perms;
-        for (SysResourceVo sysResourceVo : sysResourceVoList) {
+        for (SysResourceVO sysResourceVo : sysResourceVOList) {
             perm = sysResourceVo.getPerm();
             if (StringUtils.isEmpty(perm)) {
                 continue;

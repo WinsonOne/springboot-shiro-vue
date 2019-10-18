@@ -5,12 +5,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import xyz.winson.one.model.dto.SysUserDto;
+import xyz.winson.one.model.dto.SysUserDTO;
 import xyz.winson.one.util.EncryptUtil;
-import xyz.winson.one.util.StringUtil;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -24,7 +22,7 @@ public class SysUserServiceTest {
 
     @Test
     public void add() {
-        SysUserDto sysUserDto = new SysUserDto();
+        SysUserDTO sysUserDto = new SysUserDTO();
         sysUserDto.setUsername("admin");
         sysUserDto.setNickname("超级管理员");
         EncryptUtil encryptUtil = EncryptUtil.getInstance();

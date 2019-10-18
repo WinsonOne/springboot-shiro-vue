@@ -11,15 +11,13 @@ import xyz.winson.one.exception.GlobalException;
 import xyz.winson.one.mapper.SysRoleMapper;
 import xyz.winson.one.mapper.SysRoleResourceMapper;
 import xyz.winson.one.mapper.SysUserRoleMapper;
-import xyz.winson.one.model.dto.SysRoleDto;
+import xyz.winson.one.model.dto.SysRoleDTO;
 import xyz.winson.one.model.entity.SysRole;
 import xyz.winson.one.model.entity.SysRoleResource;
-import xyz.winson.one.model.entity.SysUser;
-import xyz.winson.one.model.entity.SysUserRole;
 import xyz.winson.one.model.vo.ApiResult;
 import xyz.winson.one.model.vo.ApiResultCodeEnum;
 import xyz.winson.one.model.vo.PageQuery;
-import xyz.winson.one.model.vo.SysRoleVo;
+import xyz.winson.one.model.vo.SysRoleVO;
 import xyz.winson.one.service.SysRoleService;
 import xyz.winson.one.shiro.SysUserContext;
 import xyz.winson.one.util.ApiResultUtil;
@@ -35,16 +33,16 @@ import java.util.*;
 @Log4j2
 public class SysRoleServiceImpl implements SysRoleService {
     @Override
-    public ApiResult<PageInfo<SysRoleVo>> list(PageQuery pageQuery) {
+    public ApiResult<PageInfo<SysRoleVO>> list(PageQuery pageQuery) {
         PageHelper.startPage(pageQuery.getPageNum(), pageQuery.getPageSize());
-        List<SysRoleVo> sysRoleVoList = sysRoleMapper.list(pageQuery.getQuery());
-        PageInfo<SysRoleVo> pageInfo = new PageInfo<>(sysRoleVoList);
+        List<SysRoleVO> sysRoleVOList = sysRoleMapper.list(pageQuery.getQuery());
+        PageInfo<SysRoleVO> pageInfo = new PageInfo<>(sysRoleVOList);
         return ApiResultUtil.success(pageInfo);
     }
 
     @Override
     @Transactional(rollbackFor = GlobalException.class)
-    public ApiResult<Void> add(SysRoleDto sysRoleDto) {
+    public ApiResult<Void> add(SysRoleDTO sysRoleDto) {
         SysRole sysRole = new SysRole();
         BeanUtils.copyProperties(sysRoleDto, sysRole);
         sysRole.setIsDelete(false);
@@ -85,7 +83,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Override
     @Transactional(rollbackFor = GlobalException.class)
-    public ApiResult<Void> update(SysRoleDto sysRoleDto) {
+    public ApiResult<Void> update(SysRoleDTO sysRoleDto) {
         SysRole sysRole = new SysRole();
         BeanUtils.copyProperties(sysRoleDto, sysRole);
         Date updateTime = Calendar.getInstance().getTime();

@@ -16,7 +16,7 @@
     <result column="update_user_id" jdbcType="BIGINT" property="updateUserId" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
-  <resultMap id="SysUserVo" type="xyz.winson.one.model.vo.SysUserVo">
+  <resultMap id="SysUserVo" type="xyz.winson.one.model.vo.SysUserVO">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="username" jdbcType="VARCHAR" property="username" />
     <result column="nickname" jdbcType="VARCHAR" property="nickname" />

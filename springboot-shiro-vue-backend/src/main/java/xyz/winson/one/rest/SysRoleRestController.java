@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.winson.one.group.UpdateGroup;
-import xyz.winson.one.model.dto.SysRoleDto;
+import xyz.winson.one.model.dto.SysRoleDTO;
 import xyz.winson.one.model.vo.ApiResult;
 import xyz.winson.one.model.vo.PageQuery;
-import xyz.winson.one.model.vo.SysRoleVo;
+import xyz.winson.one.model.vo.SysRoleVO;
 import xyz.winson.one.service.SysRoleService;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class SysRoleRestController extends BaseRestController {
      */
     @PostMapping("/list")
     @RequiresPermissions("sys:role:list")
-    public ApiResult<PageInfo<SysRoleVo>> list(@RequestBody PageQuery pageQuery) {
+    public ApiResult<PageInfo<SysRoleVO>> list(@RequestBody PageQuery pageQuery) {
         return sysRoleService.list(pageQuery);
     }
 
@@ -46,7 +46,7 @@ public class SysRoleRestController extends BaseRestController {
      */
     @PostMapping("/add")
     @RequiresPermissions("sys:role:add")
-    public ApiResult<Void> add(@RequestBody @Validated SysRoleDto sysRoleDto, BindingResult bindingResult) {
+    public ApiResult<Void> add(@RequestBody @Validated SysRoleDTO sysRoleDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return error(bindingResult);
         }
@@ -61,7 +61,7 @@ public class SysRoleRestController extends BaseRestController {
      */
     @PostMapping("/update")
     @RequiresPermissions("sys:role:update")
-    public ApiResult<Void> update(@RequestBody @Validated(value = {UpdateGroup.class}) SysRoleDto sysRoleDto, BindingResult bindingResult) {
+    public ApiResult<Void> update(@RequestBody @Validated(value = {UpdateGroup.class}) SysRoleDTO sysRoleDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return error(bindingResult);
         }

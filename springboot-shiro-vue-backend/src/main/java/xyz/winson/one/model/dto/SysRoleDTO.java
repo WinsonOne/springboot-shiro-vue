@@ -14,7 +14,7 @@ import java.util.List;
  * @date Date : 2019年09月30日 10:34
  */
 @Data
-public class SysRoleDto {
+public class SysRoleDTO {
     /**
      * 角色ID
      */

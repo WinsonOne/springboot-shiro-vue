@@ -7,12 +7,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import xyz.winson.one.group.UpdateGroup;
-import xyz.winson.one.model.dto.SysUserDto;
+import xyz.winson.one.model.dto.SysUserDTO;
 import xyz.winson.one.model.entity.SysUser;
 import xyz.winson.one.model.vo.ApiResult;
 import xyz.winson.one.model.vo.PageQuery;
-import xyz.winson.one.model.vo.SysResourceVo;
-import xyz.winson.one.model.vo.SysUserVo;
+import xyz.winson.one.model.vo.SysResourceVO;
+import xyz.winson.one.model.vo.SysUserVO;
 import xyz.winson.one.service.SysUserService;
 import xyz.winson.one.shiro.JwtAccount;
 
@@ -34,7 +34,7 @@ public class SysUserRestController extends BaseRestController {
      */
     @PostMapping("/list")
     @RequiresPermissions("sys:user:list")
-    public ApiResult<PageInfo<SysUserVo>> list(@RequestBody PageQuery pageQuery) {
+    public ApiResult<PageInfo<SysUserVO>> list(@RequestBody PageQuery pageQuery) {
         return sysUserService.list(pageQuery);
     }
 
@@ -46,7 +46,7 @@ public class SysUserRestController extends BaseRestController {
      */
     @PostMapping("/add")
     @RequiresPermissions("sys:user:add")
-    public ApiResult<Void> add(@RequestBody @Validated SysUserDto sysUserDto, BindingResult bindingResult) {
+    public ApiResult<Void> add(@RequestBody @Validated SysUserDTO sysUserDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // 参数校验不通过，提示前端
             return error(bindingResult);
@@ -62,7 +62,7 @@ public class SysUserRestController extends BaseRestController {
      */
     @PostMapping("/update")
     @RequiresPermissions("sys:user:update")
-    public ApiResult<Void> update(@RequestBody @Validated(value = {UpdateGroup.class}) SysUserDto sysUserDto, BindingResult bindingResult) {
+    public ApiResult<Void> update(@RequestBody @Validated(value = {UpdateGroup.class}) SysUserDTO sysUserDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             // 参数校验不通过，提示前端
             return error(bindingResult);
@@ -85,7 +85,7 @@ public class SysUserRestController extends BaseRestController {
      * @return
      */
     @GetMapping("/resources")
-    public ApiResult<List<SysResourceVo>> getUserResources() {
+    public ApiResult<List<SysResourceVO>> getUserResources() {
         return sysUserService.getUserResources();
     }
 

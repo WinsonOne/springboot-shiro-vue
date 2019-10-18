@@ -1,8 +1,8 @@
 package xyz.winson.one.service;
 
-import xyz.winson.one.model.dto.SysResourceDto;
+import xyz.winson.one.model.dto.SysResourceDTO;
 import xyz.winson.one.model.vo.ApiResult;
-import xyz.winson.one.model.vo.SysResourceVo;
+import xyz.winson.one.model.vo.SysResourceVO;
 
 import java.util.List;
 
@@ -17,21 +17,21 @@ public interface SysResourceService {
      * 分页查询系统资源
      * @return
      */
-    ApiResult<List<SysResourceVo>> listAll();
+    ApiResult<List<SysResourceVO>> listAll();
 
     /**
      * 新增系统资源
      * @param sysResourceDto
      * @return
      */
-    ApiResult<Void> add(SysResourceDto sysResourceDto);
+    ApiResult<Void> add(SysResourceDTO sysResourceDto);
 
     /**
      * 修改系统资源
      * @param sysResourceDto
      * @return
      */
-    ApiResult<Void> update(SysResourceDto sysResourceDto);
+    ApiResult<Void> update(SysResourceDTO sysResourceDto);
 
     /**
      * 逻辑删除系统资源

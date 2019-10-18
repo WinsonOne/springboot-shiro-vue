@@ -1,7 +1,7 @@
 package xyz.winson.one.mapper;
 
 import xyz.winson.one.model.entity.SysUser;
-import xyz.winson.one.model.vo.SysUserVo;
+import xyz.winson.one.model.vo.SysUserVO;
 
 import java.util.List;
 import java.util.Map;
@@ -64,7 +64,7 @@ public interface SysUserMapper {
      * @param query
      * @return
      */
-    List<SysUserVo> list(Map query);
+    List<SysUserVO> list(Map query);
 
     /**
      * 根据用户名查找用户信息

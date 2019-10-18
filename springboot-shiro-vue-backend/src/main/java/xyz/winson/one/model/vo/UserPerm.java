@@ -26,5 +26,5 @@ public class UserPerm {
     /**
      * 用户拥有的资源
      */
-    private List<SysResourceVo> resourceList;
+    private List<SysResourceVO> resourceList;
 }
